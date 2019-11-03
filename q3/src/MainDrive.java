@@ -1,4 +1,9 @@
 
+/**
+ * @author Terry Fung
+ * @since 25-10-2019
+ */
+
 public class MainDrive {
 	double sum = 0;
 	
@@ -7,8 +12,7 @@ public class MainDrive {
 		app.harmonic(83);
 		System.out.println(app.sum);
 	}
-	
-	
+		
 	void harmonic(int n) {
 		if(n == 0) return;
 		this.sum += (1.0/n);
