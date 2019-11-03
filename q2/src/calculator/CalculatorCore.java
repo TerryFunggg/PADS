@@ -1,13 +1,9 @@
 package calculator;
 
-
-
-
 /**
  * @author Terry Fung
  * @since 25-10-2019
  */
-
 
 import stack.*;
 import queue.*;

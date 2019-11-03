@@ -19,7 +19,6 @@ import javax.swing.JTextField;
 import linkedList.EmptyListException;
 import calculator.CalculatorCore;
 
-
 public class CalculatorUI  implements ActionListener{
 	private final int HEIGHT = 450;
 	private final int WIDTH = 400;
