@@ -11,8 +11,7 @@ public class CircularList {
 		}
 		
 		public boolean isEmpty() {return size == 0;}
-		
-		
+			
 		public void push(Object item) {
 			ListNode newNode = new ListNode(item);
 			if(isEmpty()) {
