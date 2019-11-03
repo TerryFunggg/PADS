@@ -1,9 +1,4 @@
 
-
-//import basic.EmptyListException;
-
-//import basic.EmptyListException;
-
 public class MainDrive {
 	public static void main(String[] args) {
 
