@@ -1,12 +1,13 @@
 package doublyLinkedList;
 
 import comparator.Comparator;
+import comparator.EmptyComparatorException;
 
 public class List {
     private Node head;
     private Node tail;
     private int size;
-    Comparator comparator;
+    private Comparator comparator;
     
     public List(){
     	this(null);
@@ -94,29 +95,35 @@ public class List {
 		return result + "]";
     }
     
-    public void order() {
-    	
-    }
     
     public boolean isEmpty(){return head == null;}
     
     public int getSize() {return size;}
     
-    public void mergeSort() {
+    public void mergeSort() throws EmptyComparatorException {
+    	if(comparator == null) 
+    		throw new EmptyComparatorException("The mergeSort need comparator object. Please set the comparator first.");
+    	// update head
     	head =  mergeSort(head);
+    	//update tail
+    	Node current = head;
+    	while (current.getNext() != null) {
+			current = current.getNext();
+		}
+    	tail = current;
     }
     
-    private Node mergeSort(Node node) {
-    	if(node == null || node.getNext() == null){
-    		return node;
+    private Node mergeSort(Node listNode) {
+    	if(listNode == null || listNode.getNext() == null){
+    		return listNode;
     	}
     	
-    	Node secondNode = split(node);
+    	Node secondList = split(listNode);
     	
-    	node = mergeSort(node);
-    	secondNode = mergeSort(secondNode);
+    	listNode = mergeSort(listNode);
+    	secondList = mergeSort(secondList);
     	
-    	return merge(node , secondNode);
+    	return merge(listNode , secondList);
     	
     	
     }
