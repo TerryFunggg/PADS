@@ -7,8 +7,7 @@ import comparator.*;
 
 public class MainDrive {
 	
-	private final String PATH =  "./"
-			+ "test.txt";
+	private final String PATH =  "./test.txt";
 	private HashMap<Integer, List> hashMap;  // key is length of the word , V is doubly Linked list
 	
 	public MainDrive() {
@@ -39,7 +38,7 @@ public class MainDrive {
 		int count = 0;
 		while ((line = reader.readLine()) != null) {
 			// Split sentences using regular expression
-			String[] sentence = line.split("[.:!?,\\s]+");
+			String[] sentence = line.split("[.:!()?,\\s]+");
 			// For each word
 			for (String word : sentence) {
 				count++;
@@ -47,7 +46,7 @@ public class MainDrive {
 				int length = word.length();
 
 				List current;
-				//if hasMap.get() return null , we should create a new list for new key length 
+				//if hasMap.get() return null , that mean no key length in hash map.
 				// else it will return the list which belong with the key length.
 				if((current = hashMap.get(length)) == null) {
 					//cause there no key length in the map , so create new key and list.
@@ -65,6 +64,7 @@ public class MainDrive {
 		
 		int size = 0;
 		// implement the DoublyLinked list to alphabetical order
+		// BigO = n(log n) , which n is number of list
 		for (Integer key : hashMap.keySet()) {
 			// using key to get the list
 			List current = hashMap.get(key);
