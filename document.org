@@ -1,0 +1,284 @@
+* Exercises
+** Q1
+*** Question
+
+1.	Write a program which calculates and outputs the values of n(n-1)/2 and 2n+26 for the following values of n.  
+   		
+		5  10 20 50 100 500 1000 5000 
+
+     This should present the information as a table and use the tab character “/t” to separate the columns. You should also write separate functions to calculate the values of n(n-1)/2 and 2n + 26.
+
+*** Analyse
+The point of this question is how to print out neat tables. The tables can be formatted according to the length of n characters. Use " \ t" to separate columns, but it can not dynamically format the table.
+
+The solution is:
+First, find the length of each field. Then find the maximum field length for each row. After that, the value of the maximum field length of the row is subtracted from the current field length to obtain the number of spaces to be filled.
+
+
+#+BEGIN_SRC plantuml :file ./img/q1_1.png
+title Activity of finding MaxLength of field  
+(*)--> "newLength = 0"
+--> === STARTLOOP ===
+note right: For each 2Darray columns
+if " current field len > newLength" then
+  -down->[ture] "newLength = current field length"
+  --> === ENDLOOP ===
+  --> (*)
+else
+->[false] "current field = next field"
+--> === STARTLOOP ===
+endif
+#+END_SRC
+
+#+RESULTS:
+[[file:./img/q1_1.png]]
+
+*** Implementation
+
+Tow separate functions
+#+Begin_SRC java
+public  double c1(double n) {
+	return n * ((n - 1)/2);
+}		
+public  double c2(double n) {
+	return 2 * n + 26;
+}
+#+END_SRC
+
+Program for finding max length of field in each columns
+#+Begin_SRC java
+int max = 0;
+for (int i = 0; i < table[0].length; i++) {
+  for (int j = 0; j < table.length; j++) {
+     max = table[j][i].length() > max ? table[j][i].length() : max;
+  }
+  tableWidth += maxLengthOfCols[i] = max;
+  max = 0;
+} 
+#+END_SRC
+
+After get the data of max length of field in each columns, then format the table.
+#+Begin_SRC java
+private String formatTable() {
+	String result = "";
+	String drawLine = drawLine();
+	for (int i = 0; i < table.length; i++) { // table rows
+	    for (int j = 0; j < table[0].length; j++) { // table column
+	        result += addSpace(maxLengthOfCols[j], table[i][j].length());
+		result += table[i][j] + "|"; //add data
+            }
+	    result +=  "\r\n" +drawLine + "\r\n"; // add Line
+        }		
+	return result;
+}
+
+private String addSpace(int maxFieldLength , int currentFieldLength) {
+  String result = "";
+  int space = maxFieldLength -  currentFieldLength; // 
+  for (int k = 0; k <space; k++) {
+      result += " ";
+  }
+  return result;
+}
+#+END_SRC
+
+*** Test Case
+**** Case 1
+no values:
+#+NAME:Test_case_q1_1
+[[./img/testcase/q1/1.png]]
+
+**** Case 2
+values of n "5  10" 
+#+NAME:Test_case_q1_2
+[[./img/testcase/q1/2.png]]
+
+**** Case 3
+values of "5 10 20 50 100 500 1000 5000 "
+#+NAME:Test_case_q1_3
+[[./img/testcase/q1/3.png]]
+
+**** Case 4
+values of "5 10 20 50 100 500 1000 5000 10000 25000 5 10"
+#+NAME:Test_case_q1_4
+[[./img/testcase/q1/4.png]]
+
+**** Case 5
+values of "0 -10 -5000"
+#+NAME:Test_case_q1_5
+[[./img/testcase/q1/5.png]]
+** Q2
+*** Question
+	Write a program to simulate a calculator which can accept digital number inputs and perform basic +-*/ operations. Test run your program with your own test data.
+*** Analyse
+The infix equation is easy to read for humans, but for computers, it takes some effort to read the infix equation, 
+such as handling parentheses. Also using the computer to process the infix equation does not match the computer design pattern.
+Postfix is slightly easier to evaluate in simple circumstances[The Iniversity of Manchester:n.d.],so that we need to make infix string to postfix.
+
+Given the pseudocode code:
+#+Begin_SRC
+for each token in the infixList:
+   if token is number:
+       add token to postfixlist
+   else:
+      loop stack is not empty && check the precedence between token and stack.peek():
+           if stack.peek() is higher precedence then tonken, add stack.pop to postfixList
+      add the token to stack
+   endif
+end for
+loop the stack: 
+      if there still have operators, pop it to postfixList      
+
+#+END_SRC
+
+using ~JFame~ package implement the calculator UI.
+Here is the class diagram:
+#+BEGIN_SRC plantuml :file ./img/q2_1.png
+JFame <|-- CalculatorUI
+CalculatorCore <|-- CalculatorUI
+
+class CalculatorUI {
+  __private data__
+  JFrame jFrame
+  CalculatorUI core
+  ... Method ...
+  + init()
+}
+
+class CalculatorCore {
+  __ private data __
+  LinkedList postEquQueue
+  String equation
+  double result
+  ... Method ...
+  process():void
+  infixToPostfix():String
+  setEquation:void
+  getEquation:Strng
+  getResult():double
+}
+
+
+#+END_SRC
+
+#+RESULTS:
+[[file:./img/q2_1.png]]
+
+*** Implementation
+First, we need to set up precedence, The ~*/~ operators must have higher precedence then ~+-~.
+#+Begin_SRC java
+private int checkPrecedence(String c1) {
+    switch (c1) {
+           case "+":
+	   case "-":
+	        return 1;
+           case "*":
+	   case "/":
+                return 3;
+	}
+  return -1;
+}
+#+END_SRC
+
+The mian program of infix to postfix , which is simple whitout checking parenthesis.We need to use looping to identify each tonken of string.
+First, create an empty Stack to store operators and also create empty list to store result.
+Then,using String method ~split()~ to convert string array which is keeping token form input string.
+After that, using ~foreach~ looping to scan each array
+
+
+#+Begin_SRC java
+private String infixToPostfix(String equation) throws EmptyListException {
+		Stack stack = new Stack();
+		String[] equations = equation.split(REGEX);
+		for ( String token : equations) {
+			if(!isOperator(token)){
+				postfixList.addToTail(token);
+			}else {
+				while (!stack.isEmpty() 
+						&& checkPrecedence((String)stack.peek()) > checkPrecedence(token)) {
+					postfixList.addToTail((String)stack.pop());						
+				}
+				stack.push((String)token);
+			}
+		}		
+		while(!stack.isEmpty()) {
+			postfixList.addToTail((String)stack.pop());
+		}
+ 	return toPostfixString(postfixList.toString()) ;
+	}
+#+END_SRC
+
+Some configuration of JFrame UI
+#+Begin_SRC java
+// Window setting
+jFrame.setResizable(true);
+jFrame.setSize(WIDTH, HEIGHT);
+jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+jFrame.pack();
+jFrame.setLocation(10, 10);
+jFrame.setVisible(true);
+        
+// Panel
+Container container = jFrame.getContentPane();
+JPanel numPadPanel = new JPanel();
+JPanel displayPanel = new JPanel();
+numPadPanel.setLayout(new GridLayout(4, 4, 5, 5));
+resultTextField.setEditable(false);
+resultTextField.setFont(new Font("Aria",Font.PLAIN,50));
+resultTextField.setAlignmentX((TextField.RIGHT_ALIGNMENT));
+displayPanel.add(resultTextField);
+displayPanel.setLayout(new FlowLayout(3));
+container.add(numPadPanel , BorderLayout.CENTER);
+container.add(displayPanel , BorderLayout.NORTH);
+        	
+// Button
+JButton[] buttons = new JButton[NUMOFNUMPAD];
+for (int i = 0; i < NUMOFNUMPAD; i++) {
+  buttons[i] = new JButton(numPad[i]);
+  numPadPanel.add(buttons[i]);
+  buttons[i].addActionListener(this);
+			
+}
+buttons[16].setPreferredSize(new Dimension(55,55));
+displayPanel.add(buttons[16]);
+#+END_SRC
+Display:
+#+NAME:calculator
+[[./img/testcase/q2/1.png]]
+
+
+*** Test Case
+**** Case1
+infix : 3+5
+#+NAME:test_case_q2_1
+[[./img/testcase/q2/2.png]]
+**** Case2
+intfix : 50 - 31
+#+NAME:test_case_q2_2
+[[./img/testcase/q2/3.png]]
+**** Case3
+infix : 6 * 32
+#+NAME:test_case_q2_3
+[[./img/testcase/q2/4.png]]
+**** Case4
+infix : 15/2
+#+NAME:test_case_q2_4
+[[./img/testcase/q2/5.png]]
+**** Case5
+infix : 25 * 6 + 3 / 2
+#+NAME:test_case_q2_5
+[[./img/testcase/q2/6.png]]
+**** Case6
+infix : 50 / 2 - 3 + 0
+#+NAME:test_case_q2_6
+[[./img/testcase/q2/7.png]]
+**** Case7
+infix ： 5 / 3
+#+NAME:test_case_q2_7
+[[./img/testcase/q2/8.png]]
+
+** Q3
+
+* Reference
+
+The Iniversity of Mancheste(n.d.) /Infix, Postfix and Prefix/[online] available from <http://www.cs.man.ac.uk/~pjj/cs212/fix.html> [25 October 2019] 
