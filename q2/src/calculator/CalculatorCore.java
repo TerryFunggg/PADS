@@ -1,13 +1,14 @@
 package calculator;
 
 /**
- * @author Terry Fung
+ * @author Terry_Fung
  * @since 25-10-2019
  */
 
 import stack.*;
-import queue.*;
+
 import linkedList.EmptyListException;
+import linkedList.LinkedList;
 
 /**
  *CalculatorCore is a core of calculator.
@@ -17,7 +18,7 @@ import linkedList.EmptyListException;
 public class CalculatorCore {
 	
 	private final String REGEX = "(?<=[-+*/])|(?=[-+*/])";
-	private Queue postEquQueue;
+	private LinkedList postfixList;
 	private String equation;
 	private double result;
 	/**
@@ -25,7 +26,7 @@ public class CalculatorCore {
 	 * @throws EmptyListException 
 	*/
 	public CalculatorCore() {
-		postEquQueue = new Queue();
+		postfixList = new LinkedList();
 		equation = null;
 		result = 0;
 	}
@@ -66,33 +67,29 @@ public class CalculatorCore {
 	private String infixToPostfix(String equation) throws EmptyListException {
 		Stack stack = new Stack();
 		String[] equations = equation.split(REGEX);
-		
-		for (int i = 0; i < equations.length; i++) {
-			if(isOperator(equations[i])) {
-					if(stack.isEmpty() || checkPrecedence(equations[i])  > checkPrecedence((String)stack.peek()) ) {
-						stack.push((String) equations[i]);
-					}else {
-						while (!stack.isEmpty() && checkPrecedence(equations[i])  < checkPrecedence((String)stack.peek())) {							
-								postEquQueue.enqueue((String)stack.pop());
-						}
-						stack.push((String) equations[i]);
-					}
+		for ( String token : equations) {
+			if(!isOperator(token)){
+				postfixList.addToTail(token);
 			}else {
-				postEquQueue.enqueue((String)equations[i]);
+				while (!stack.isEmpty() 
+						&& checkPrecedence((String)stack.peek()) > checkPrecedence(token)) {
+					postfixList.addToTail((String)stack.pop());						
+				}
+				stack.push((String)token);
 			}
 		}
-		while(!stack.isEmpty()) {
-			postEquQueue.enqueue((String)stack.pop());
-		}
 		
-		return toPostfixString(postEquQueue.toString()) ;
+		while(!stack.isEmpty()) {
+			postfixList.addToTail((String)stack.pop());
+		}
+		return toPostfixString(postfixList.toString()) ;
 	}
 	
 	
 	public void setEquation(String equation) throws EmptyListException {
 		this.equation = equation;
-		while (!postEquQueue.isEmpty()) {
-			postEquQueue.dequeue();
+		while (!postfixList.isEmpty()) {
+			postfixList.removeFromTail();
 		}
 		
 	}
@@ -140,7 +137,7 @@ public class CalculatorCore {
 					return 1;	
 				case "*":
 				case "/":
-					return 2;
+					return 3;
 			}
 			return -1;
 		

@@ -43,14 +43,12 @@ public class CalculatorUI  implements ActionListener{
 		// Window setting
 		jFrame.setResizable(true);
 		jFrame.setSize(WIDTH, HEIGHT);
-		//jFrame.setPreferredSize(new Dimension(WIDTH,HEIGHT));
-		//jFrame.setMinimumSize(new Dimension(WIDTH,HEIGHT));
 		jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		jFrame.pack();
 		jFrame.setLocation(10, 10);
         jFrame.setVisible(true);
         
-        	// Panel
+        // Panel
         Container container = jFrame.getContentPane();
         JPanel numPadPanel = new JPanel();
         	JPanel displayPanel = new JPanel();
@@ -66,12 +64,9 @@ public class CalculatorUI  implements ActionListener{
         	// Button
         	JButton[] buttons = new JButton[NUMOFNUMPAD];
         	for (int i = 0; i < NUMOFNUMPAD; i++) {
-			buttons[i] = new JButton(numPad[i]);
-			Color color = i%4 == 3 ? new Color(255,140,0 ,1) : Color.GRAY;
-			buttons[i].setBackground(color);
-			buttons[i].setForeground(Color.BLACK);
-			numPadPanel.add(buttons[i]);
-			buttons[i].addActionListener(this);
+				buttons[i] = new JButton(numPad[i]);
+				numPadPanel.add(buttons[i]);
+				buttons[i].addActionListener(this);
 			
 		}
         	buttons[16].setPreferredSize(new Dimension(55,55));
