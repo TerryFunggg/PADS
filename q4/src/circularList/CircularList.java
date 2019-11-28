@@ -37,6 +37,13 @@ public class CircularList {
 				
 			}else {
 				result = head.getData();
+				
+				ListNode current = head;
+				while (current.getNext() != head) {
+						current = current.getNext();
+				}
+				current.setNext(head.getNext());
+				
 				head = head.getNext();
 			}
 			size --;
@@ -51,26 +58,29 @@ public class CircularList {
 				head = null;
 			}else {
 				ListNode current = head;
-				while (current.getNext().getNext() != head) {
-					current = current.getNext();
+				while(current.getNext().getNext() != head) {
+						current = current.getNext();
 				}
 				result = current.getNext().getData();
-				current.setNext(current.getNext().getNext());
+				current.setNext(head);
 			}
 			size--;
 			return result;
 		}
-		
-		
+
 		
 		public String toString() {
 			String r = "[ ";
-			ListNode current = head;
-			for (int i = 0; i < size; i++) {
-				r += current.getData() + " ";
-				current = current.getNext();
+			if( head != null) {
+				ListNode current = head;
+				do {
+					r += current.getData() + " ";
+					current = current.getNext();
+				} while (current != head);
+			
+				
 			}
-			return r + "]";
+			return r + " ]";
 		}
 		
 		public int getSize() {
