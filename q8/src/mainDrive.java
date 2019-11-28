@@ -3,14 +3,11 @@ import java.util.Random;
 public class mainDrive {
 	public static void main(String[] args) {
 			
-		int[] a = new int[1000];
-	
-		for (int i = 0; i < a.length; i++) {
-			a[i] = i;
-		}
+		int[] a = {1,2,3,11,20,100,120,12};
+
 		
 		double startTime = System.nanoTime();
-		int index = binarySearch(a, 0, a.length - 1, 1);
+		int index = binarySearch(a, 0, a.length - 1 ,3 );
 		double endTime  = System.nanoTime();
 		System.out.println("index:" + index + " , Time: " + (endTime - startTime) + " ms");
 	}

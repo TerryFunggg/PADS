@@ -1,5 +1,6 @@
 package graph;
 
+import java.util.Iterator;
 
 /**
  * @author singtaifung
@@ -17,6 +18,7 @@ public class DFS {
 	
 	public void dfs(UndirectedGraph graph , int v) {
 		marked[v] = true;
+		
 		count++;
 		for (int w : graph.adjacency(v)) {
 			if(!marked[w])
@@ -24,6 +26,10 @@ public class DFS {
 			
 		}
 	}
+
+		
+	
+		
 		
     public boolean marked(int v) {
         return marked[v];

@@ -17,42 +17,21 @@ public class MainDrive {
 			circularList.push("TY");
 			System.out.println(circularList.toString());
 			
-			// Testing delete
-			circularList.removeFromHead();
-			System.out.println(circularList.toString());
-			circularList.removeFromHead();
-			System.out.println(circularList.toString());
-			circularList.removeFromHead();
-			System.out.println(circularList.toString());
-			circularList.removeFromHead();
-			System.out.println(circularList.toString());
-			
-			
-			circularList.push(12);
-			circularList.push(10);
-			circularList.push("ddd");
-			circularList.push("TY");
-//			
 //			// Testing delete
 			circularList.removeFromTail();
-			System.out.println(circularList.toString());
+			System.out.println(circularList);
+			circularList.removeFromHead();
+			System.out.println(circularList);
 			circularList.removeFromTail();
-			System.out.println(circularList.toString());
-			circularList.removeFromTail();
-			System.out.println(circularList.toString());
-			circularList.removeFromTail();
-			System.out.println(circularList.toString());
+			System.out.println(circularList);
+			circularList.removeFromHead();
+			System.out.println(circularList);
 			
-			circularList.push(12);
-			circularList.push(10);
-			circularList.push("ddd");
-			circularList.push("TY");
-
-			
+			circularList.removeFromTail();
+				
+		} catch (EmptyListException e) {
 		
-	} catch (EmptyListException e) {
-		
-		System.out.print(e.getMessage());
-	}
+			System.out.print(e.getMessage());
 		}
+	}
 }

@@ -1,7 +1,7 @@
 import java.util.Arrays;
 
 public class MainDrive {
-	int test = 0;
+
 
 	public static void main(String[] args) {
 		int[] array = { 98, 38, 93, 33, 21, 6, 63, 81, 32 };

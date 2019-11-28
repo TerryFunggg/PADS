@@ -3,16 +3,18 @@ package arrayQueue;
 
 public class ArrayQueue {
 	private final static int MAX_LENGTH = 9999; 
-	 int front;
-	 int rear;
-	 int capacity;
-     int count;
-	private Object[] array;
+	 private int front;
+	 private int rear;
+	 private int capacity;
+	 private int count;
+	 private Object[] array;
 	
 	public ArrayQueue() {
 		this(MAX_LENGTH);
 	}
 	public ArrayQueue(int capacity) {
+		if(capacity > MAX_LENGTH) 
+			throw new IllegalArgumentException();
 		front = rear = -1;
 		this.capacity = capacity;
 		array = new Object[capacity];
